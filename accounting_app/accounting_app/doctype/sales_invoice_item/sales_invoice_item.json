@@ -8,7 +8,7 @@
  "field_order": [
   "section_break_hliw",
   "item",
-  "quantity",
+  "qty",
   "rate",
   "amount"
  ],
@@ -26,13 +26,6 @@
    "reqd": 1
   },
   {
-   "fieldname": "quantity",
-   "fieldtype": "Float",
-   "in_list_view": 1,
-   "label": "quantity",
-   "reqd": 1
-  },
-  {
    "fieldname": "rate",
    "fieldtype": "Currency",
    "in_list_view": 1,
@@ -45,13 +38,20 @@
    "in_list_view": 1,
    "label": "Amount",
    "read_only": 1
+  },
+  {
+   "fieldname": "qty",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Qty",
+   "reqd": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-06-02 14:08:37.320989",
+ "modified": "2025-06-15 12:36:31.278259",
  "modified_by": "Administrator",
  "module": "accounting_app",
  "name": "Sales Invoice Item",
