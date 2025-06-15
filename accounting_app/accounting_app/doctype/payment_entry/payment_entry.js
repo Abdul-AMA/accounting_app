@@ -20,8 +20,7 @@ frappe.ui.form.on('Payment Entry', {
             frm.get_field('account_paid_from').set_label('Paid From Account');   
             frm.get_field('account_paid_to').set_label('Paid To Account');      
         } else {
-            frm.get_field('account_paid_from').set_label('Account paid from');
-            frm.get_field('account_paid_to').set_label('Account Paid to');
+            throw new Error("not listed paymeny_type");            
         }
         frm.refresh(); 
 
