@@ -14,7 +14,9 @@
   "credit_amount",
   "is_cancelled",
   "voucher_type",
-  "voucher_number"
+  "voucher_number",
+  "remark",
+  "amended_from"
  ],
  "fields": [
   {
@@ -64,7 +66,8 @@
    "default": "0",
    "fieldname": "is_cancelled",
    "fieldtype": "Check",
-   "label": "Is Cancelled"
+   "label": "Is Cancelled",
+   "read_only": 1
   },
   {
    "fieldname": "voucher_type",
@@ -79,12 +82,28 @@
    "in_list_view": 1,
    "label": "Voucher Number",
    "reqd": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "GL Entry",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "remark",
+   "fieldtype": "Small Text",
+   "label": "Remark"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
+ "is_submittable": 1,
  "links": [],
- "modified": "2025-06-15 15:42:03.633575",
+ "modified": "2025-06-16 11:54:44.394006",
  "modified_by": "Administrator",
  "module": "accounting_app",
  "name": "GL Entry",
