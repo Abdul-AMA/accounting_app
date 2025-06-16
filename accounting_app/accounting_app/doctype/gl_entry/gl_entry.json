@@ -63,6 +63,7 @@
    "label": "Credit Amount"
   },
   {
+   "allow_on_submit": 1,
    "default": "0",
    "fieldname": "is_cancelled",
    "fieldtype": "Check",
@@ -103,7 +104,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-06-16 11:54:44.394006",
+ "modified": "2025-06-16 14:58:29.028650",
  "modified_by": "Administrator",
  "module": "accounting_app",
  "name": "GL Entry",
