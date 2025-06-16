@@ -14,7 +14,8 @@
   "total_qty",
   "total_amount",
   "credit_to",
-  "expense_account"
+  "expense_account",
+  "amended_from"
  ],
  "fields": [
   {
@@ -76,12 +77,23 @@
    "link_filters": "{\"account_type\": \"Expense\"}",
    "options": "Account",
    "reqd": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Purchase Invoice",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
+ "is_submittable": 1,
  "links": [],
- "modified": "2025-06-15 12:14:04.329672",
+ "modified": "2025-06-16 10:48:04.135900",
  "modified_by": "Administrator",
  "module": "accounting_app",
  "name": "Purchase Invoice",
