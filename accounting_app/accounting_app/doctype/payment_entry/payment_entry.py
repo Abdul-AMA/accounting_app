@@ -1,9 +1,36 @@
-# Copyright (c) 2025, abood-ama and contributors
-# For license information, please see license.txt
+from accounting_app.accounting_app.controllers.accounting_controller import AccountingController
 
-# import frappe
-from frappe.model.document import Document
+class PaymentEntry(AccountingController):
 
+    def make_gl_entries(self):
+        if self.payment_type == "Receive":
+            self._create_gl_entry(
+                posting_date=self.posting_date,
+                account=self.account_paid_to,
+                party=self.party,
+                debit=self.amount,
+                credit=0
+            )
+            self._create_gl_entry(
+                posting_date=self.posting_date,
+                account=self.account_paid_from,
+                party=self.party,
+                debit=0,
+                credit=self.amount
+            )
+        elif self.payment_type == "Pay":
+            self._create_gl_entry(
+                posting_date=self.posting_date,
+                account=self.account_paid_to,
+                party=self.party,
+                debit=self.amount,
+                credit=0
+            )
 
-class PaymentEntry(Document):
-	pass
+            self._create_gl_entry(
+                posting_date=self.posting_date,
+                account=self.account_paid_from,
+                party=self.party,
+                debit=0,
+                credit=self.amount
+            )
