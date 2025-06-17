@@ -1,5 +1,5 @@
 import frappe
-from accounting_app.accounting_app.controllers.accounting_controller import AccountingController
+from ...controllers.AccountingController import AccountingController
 
 class JournalEntry(AccountingController):
 
