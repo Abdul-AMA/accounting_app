@@ -1,6 +1,25 @@
 
 frappe.ui.form.on('Sales Invoice', {
     refresh: function(frm) {
+
+        frm.set_query('customer', function() {
+            return {
+                filters: { 'party_type': 'Customer' }
+            };
+        });
+
+        frm.set_query('debit_to', function() {
+            return {
+                filters: { 'account_type': 'Asset', 'is_group': 0 }
+            };
+        });
+
+        frm.set_query('income_account', function() {
+            return {
+                filters: { 'account_type': 'Income', 'is_group': 0 }
+            };
+        });
+
    },
 
     calculate_totals: function(frm) {

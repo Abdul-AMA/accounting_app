@@ -5,18 +5,38 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "section_break_dpvo"
+  "section_break_dpvo",
+  "year_name",
+  "start_date",
+  "end_date"
  ],
  "fields": [
   {
    "fieldname": "section_break_dpvo",
    "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "year_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Year Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "start_date",
+   "fieldtype": "Date",
+   "label": "Start Date"
+  },
+  {
+   "fieldname": "end_date",
+   "fieldtype": "Date",
+   "label": "End Date"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-06-02 12:47:47.448058",
+ "modified": "2025-06-17 12:20:50.438081",
  "modified_by": "Administrator",
  "module": "accounting_app",
  "name": "Fiscal Year",
