@@ -10,6 +10,7 @@
   "naming_series",
   "supplier",
   "posting_date",
+  "payment_due_date",
   "items",
   "total_qty",
   "total_amount",
@@ -26,7 +27,7 @@
    "fieldname": "naming_series",
    "fieldtype": "Select",
    "label": "Naming Series",
-   "options": "PINV-.YYYY.-"
+   "options": "PINV-.YYYY.-#####"
   },
   {
    "fieldname": "supplier",
@@ -87,13 +88,19 @@
    "print_hide": 1,
    "read_only": 1,
    "search_index": 1
+  },
+  {
+   "fieldname": "payment_due_date",
+   "fieldtype": "Date",
+   "label": "Payment Due Date",
+   "reqd": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-06-16 10:48:04.135900",
+ "modified": "2025-06-17 12:58:20.424151",
  "modified_by": "Administrator",
  "module": "accounting_app",
  "name": "Purchase Invoice",

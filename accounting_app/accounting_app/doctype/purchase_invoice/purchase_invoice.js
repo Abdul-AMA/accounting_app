@@ -1,4 +1,28 @@
 frappe.ui.form.on('Purchase Invoice', {
+
+        refresh: function(frm) {
+
+        frm.set_query('supplier', function() {
+            return {
+                filters: { 'party_type': 'Supplier' }
+            };
+        });
+
+        frm.set_query('credit_to', function() {
+            return {
+                filters: { 'account_type': 'Liability', 'is_group': 0 }
+            };
+        });
+
+        frm.set_query('expense_account', function() {
+            return {
+                filters: { 'account_type': 'Expense', 'is_group': 0 }
+            };
+        });
+
+   },
+
+
     calculate_totals: function(frm) {
         let total_qty = 0;
         let total_amount = 0;
