@@ -1,5 +1,21 @@
 
 frappe.ui.form.on('Payment Entry', {
+  
+    refresh: function(frm) {
+        frm.set_query('party', function() {
+            return {
+                filters: {
+                    'party_type': frm.doc.party_type
+                }
+            };
+        });
+    },
+
+    party_type: function(frm) {
+        frm.set_value('party', '');
+    },
+
+  
     on_load: function(frm) {
         frm.trigger('setup_dynamic_fields');
     },

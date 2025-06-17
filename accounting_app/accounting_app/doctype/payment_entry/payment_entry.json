@@ -52,9 +52,9 @@
   },
   {
    "fieldname": "party",
-   "fieldtype": "Dynamic Link",
+   "fieldtype": "Link",
    "label": "Party",
-   "options": "party_type"
+   "options": "Party"
   },
   {
    "fieldname": "account_paid_from",
@@ -93,7 +93,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-06-16 10:48:11.541237",
+ "modified": "2025-06-17 13:26:00.481924",
  "modified_by": "Administrator",
  "module": "accounting_app",
  "name": "Payment Entry",
