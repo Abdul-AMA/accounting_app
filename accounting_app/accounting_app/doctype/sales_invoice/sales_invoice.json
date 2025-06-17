@@ -30,11 +30,11 @@
    "options": "GADA-ELEC-.YYYY.-.#####"
   },
   {
+   "allow_in_quick_entry": 1,
    "fieldname": "customer",
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Customer",
-   "link_filters": "{\"party_type\": \"Customer\"}",
    "options": "Party",
    "reqd": 1
   },
@@ -73,7 +73,6 @@
    "fieldname": "debit_to",
    "fieldtype": "Link",
    "label": "Debit To",
-   "link_filters": "{\"account_type\": \"Asset\"}",
    "options": "Account",
    "reqd": 1
   },
@@ -81,7 +80,6 @@
    "fieldname": "income_account",
    "fieldtype": "Link",
    "label": "Income Account",
-   "link_filters": "{\"account_type\": \"Income\"}",
    "options": "Account",
    "reqd": 1
   },
@@ -100,7 +98,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-06-16 10:47:56.950694",
+ "modified": "2025-06-17 12:22:31.632488",
  "modified_by": "Administrator",
  "module": "accounting_app",
  "name": "Sales Invoice",
