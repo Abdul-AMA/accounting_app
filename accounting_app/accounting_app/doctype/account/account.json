@@ -1,5 +1,6 @@
 {
  "actions": [],
+ "allow_import": 1,
  "allow_rename": 1,
  "autoname": "field:account_name",
  "creation": "2025-06-02 12:56:31.403362",
@@ -89,7 +90,7 @@
  "index_web_pages_for_search": 1,
  "is_tree": 1,
  "links": [],
- "modified": "2025-06-02 12:59:46.748395",
+ "modified": "2025-06-18 15:24:34.597980",
  "modified_by": "Administrator",
  "module": "accounting_app",
  "name": "Account",
