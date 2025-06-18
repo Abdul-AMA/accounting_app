@@ -21,36 +21,59 @@ def get_columns():
 
 def get_data(filters):
     gl_entry = frappe.qb.DocType("GL Entry")
-    query = (
+    
+    conditions = []
+
+    if filters.get("from_date"):
+        conditions.append(gl_entry.posting_date >= filters.get("from_date"))
+    if filters.get("to_date"):
+        conditions.append(gl_entry.posting_date <= filters.get("to_date"))
+    if filters.get("account"):
+        conditions.append(gl_entry.account == filters.get("account"))
+    if filters.get("party"):
+        conditions.append(gl_entry.party == filters.get("party"))
+
+    data = (
         frappe.qb.from_(gl_entry)
         .select(gl_entry.star)
-        .where(gl_entry.is_cancelled == 0)
+        .where(conditions) 
         .orderby(gl_entry.posting_date, gl_entry.creation)
-    )
-    if filters.get("from_date") and filters.get("to_date"):
-        query = query.where(gl_entry.posting_date.between(filters.get("from_date"), filters.get("to_date")))
-    if filters.get("account"):
-        query = query.where(gl_entry.account == filters.get("account"))
-    if filters.get("party"):
-        query = query.where(gl_entry.party == filters.get("party"))
-    data = query.run(as_dict=True)
+    ).run(as_dict=True)
 
     balance = 0
     if filters.get("account"):
         balance = get_opening_balance(filters.get("account"), filters.get("from_date"))
         if balance != 0:
-            data.insert(0, {"posting_date": frappe.utils.add_days(filters.get("from_date"), -1), "account": filters.get("account"), "voucher_number": "Opening Balance", "balance": balance})
+            data.insert(0, {
+                "posting_date": frappe.utils.add_days(filters.get("from_date"), -1) if filters.get("from_date") else "",
+                "account": filters.get("account"), "voucher_number": "Opening Balance",
+                "balance": balance
+            })
+
     for row in data:
         if row.get("voucher_number") != "Opening Balance":
-            balance += row.get("debit_amount", 0) - row.get("credit_amount", 0)
+            if not row.get("is_cancelled"):
+                balance += row.get("debit_amount", 0) - row.get("credit_amount", 0)
             row["balance"] = balance
+
     return data
 
+
 def get_opening_balance(account, from_date):
+    if not from_date:
+        return 0
+
     gl_entry = frappe.qb.DocType("GL Entry")
+    Sum = frappe.qb.functions.Sum
+
     opening = (
         frappe.qb.from_(gl_entry)
         .select((Sum(gl_entry.debit_amount) - Sum(gl_entry.credit_amount)).as_("balance"))
-        .where((gl_entry.account == account) & (gl_entry.is_cancelled == 0) & (gl_entry.posting_date < from_date))
+        .where(
+            (gl_entry.account == account) &
+            (gl_entry.is_cancelled == 0) & 
+            (gl_entry.posting_date < from_date)
+        )
     ).run(as_dict=True)
+    
     return opening[0].balance if opening and opening[0].balance is not None else 0
