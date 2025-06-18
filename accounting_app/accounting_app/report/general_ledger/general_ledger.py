@@ -42,38 +42,9 @@ def get_data(filters):
 
     balance = 0
     if filters.get("account"):
-        balance = get_opening_balance(filters.get("account"), filters.get("from_date"))
-        if balance != 0:
-            data.insert(0, {
-                "posting_date": frappe.utils.add_days(filters.get("from_date"), -1) if filters.get("from_date") else "",
-                "account": filters.get("account"), "voucher_number": "Opening Balance",
-                "balance": balance
-            })
+        query = query.where(gl_entry.account == filters.get("account"))
+    if filters.get("party"):
+        query = query.where(gl_entry.party == filters.get("party"))
 
-    for row in data:
-        if row.get("voucher_number") != "Opening Balance":
-            if not row.get("is_cancelled"):
-                balance += row.get("debit_amount", 0) - row.get("credit_amount", 0)
-            row["balance"] = balance
+    return query.run(as_dict=True)
 
-    return data
-
-
-def get_opening_balance(account, from_date):
-    if not from_date:
-        return 0
-
-    gl_entry = frappe.qb.DocType("GL Entry")
-    Sum = frappe.qb.functions.Sum
-
-    opening = (
-        frappe.qb.from_(gl_entry)
-        .select((Sum(gl_entry.debit_amount) - Sum(gl_entry.credit_amount)).as_("balance"))
-        .where(
-            (gl_entry.account == account) &
-            (gl_entry.is_cancelled == 0) & 
-            (gl_entry.posting_date < from_date)
-        )
-    ).run(as_dict=True)
-    
-    return opening[0].balance if opening and opening[0].balance is not None else 0
