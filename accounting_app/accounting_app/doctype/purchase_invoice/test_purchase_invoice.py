@@ -1,22 +1,36 @@
 import frappe
 from ...tests.base import AccountingTestCase
 
-class IntegrationTestPurchaseInvoice(AccountingTestCase):
-    def test_purchase_gl_posting_and_cancellation(self):
-        pi = frappe.get_doc({
-            "doctype": "Purchase Invoice", "supplier": self.supplier,
-            "posting_date": frappe.utils.today(), "credit_to": self.payable_account,
-            "expense_account": self.expense_account,
-            "items": [{"item_code": self.test_item, "qty": 10, "rate": 1500, "amount": 15000}]
+
+class IntegrationTestSalesInvoice(AccountingTestCase):
+    
+    def test_submission_creates_balanced_gl_entries(self):
+        """Tests if submitting a Sales Invoice creates correct and balanced GL entries."""
+        si = frappe.get_doc({
+            "doctype": "Sales Invoice", "customer": self.customer,
+            "posting_date": frappe.utils.today(), "payment_due_date": frappe.utils.today(),  
+            "debit_to": self.receivable_account, "income_account": self.income_account,
+            "items": [{"item": self.test_item, "qty": 2, "rate": 5000, "amount": 10000}]
         }).insert()
-        pi.submit()
+        si.submit()
 
-        self.assertVoucherBalanced(pi.doctype, pi.name)
+        self.assertVoucherBalanced(si.doctype, si.name)
         expected_entries = [
-            {"account": self.expense_account, "debit": 15000},
-            {"account": self.payable_account, "credit": 15000}
+            {"account": self.receivable_account, "debit": 10000},
+            {"account": self.income_account, "credit": 10000}
         ]
-        self.assertGLEntries(pi.doctype, pi.name, expected_entries)
+        self.assertGLEntries(si.doctype, si.name, expected_entries)
 
-        pi.cancel()
-        self.assertNetEffectIsZero(pi.doctype, pi.name)
+    def test_cancellation_reverses_gl_entries(self):
+        """Tests if cancelling a Sales Invoice correctly reverses its GL entries."""
+        si = frappe.get_doc({
+            "doctype": "Sales Invoice", "customer": self.customer,
+            "posting_date": frappe.utils.today(), "payment_due_date": frappe.utils.today(),
+            "debit_to": self.receivable_account, "income_account": self.income_account,
+            "items": [{"item": self.test_item, "qty": 1, "rate": 100, "amount": 100}]
+        }).insert()
+        si.submit()
+
+        si.cancel()
+
+        self.assertNetEffectIsZero(si.doctype, si.name)
