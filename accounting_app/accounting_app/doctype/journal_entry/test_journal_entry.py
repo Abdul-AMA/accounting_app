@@ -1,22 +1,48 @@
-# Copyright (c) 2025, abood-ama and Contributors
-# See license.txt
+import frappe
+from ...tests.base import AccountingTestCase
 
-# import frappe
-from frappe.tests import IntegrationTestCase
+class IntegrationTestJournalEntry(AccountingTestCase):
+
+    def test_journal_entry_posting(self):
+        je = frappe.get_doc({
+            "doctype": "Journal Entry", "posting_date": frappe.utils.today(),
+            "accounting_entries": [
+                { "account": self.bank_account, "debit": 10000},
+                { "account": self.expense_account, "credit": 10000}
+            ]
+        }).insert()
+        je.submit()
+        
+        self.assertVoucherBalanced(je.doctype, je.name)
+        expected_entries = [
+            {"account": self.bank_account, "debit": 10000},
+            {"account": self.expense_account, "credit": 10000}
+        ]
+        self.assertGLEntries(je.doctype, je.name, expected_entries)
+
+    def test_journal_entry_cancellation(self):
+        je = frappe.get_doc({
+            "doctype": "Journal Entry", "posting_date": frappe.utils.today(),
+            "accounting_entries": [
+                { "account": self.receivable_account, "debit": 250},
+                { "account": self.income_account, "credit": 250}
+            ]
+        }).insert()
+        je.submit()
+
+        je.cancel()
+        self.assertNetEffectIsZero(je.doctype, je.name)
 
 
-# On IntegrationTestCase, the doctype test records and all
-# link-field test record dependencies are recursively loaded
-# Use these module variables to add/remove to/from that list
-EXTRA_TEST_RECORD_DEPENDENCIES = []  # eg. ["User"]
-IGNORE_TEST_RECORD_DEPENDENCIES = []  # eg. ["User"]
+    def test_unbalanced_journal_entry_is_rejected(self):
+        """Tests that creating an unbalanced Journal Entry raises a ValidationError."""
 
-
-
-class IntegrationTestJournalEntry(IntegrationTestCase):
-	"""
-	Integration tests for JournalEntry.
-	Use this class for testing interactions between multiple components.
-	"""
-
-	pass
+        with self.assertRaises(frappe.ValidationError):
+            frappe.get_doc({
+                "doctype": "Journal Entry",
+                "posting_date": frappe.utils.today(),
+                "accounting_entries": [
+                    { "account": self.bank_account, "debit": 1000},
+                    { "account": self.expense_account, "credit": 999} 
+                ]
+            }).insert()

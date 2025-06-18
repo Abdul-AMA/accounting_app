@@ -1,22 +1,46 @@
-# Copyright (c) 2025, abood-ama and Contributors
-# See license.txt
+import frappe
+from ...tests.base import AccountingTestCase
 
-# import frappe
-from frappe.tests import IntegrationTestCase
+class IntegrationTestPaymentEntry(AccountingTestCase):
 
+    def test_receive_payment_submission(self):
+        pe = frappe.get_doc({
+            "doctype": "Payment Entry", "payment_type": "Receive",
+            "posting_date": frappe.utils.today(), "party": self.customer,
+            "account_paid_from": self.receivable_account, "account_paid_to": self.bank_account,
+            "amount": 500
+        }).insert()
+        pe.submit()
+        self.assertVoucherBalanced(pe.doctype, pe.name)
 
-# On IntegrationTestCase, the doctype test records and all
-# link-field test record dependencies are recursively loaded
-# Use these module variables to add/remove to/from that list
-EXTRA_TEST_RECORD_DEPENDENCIES = []  # eg. ["User"]
-IGNORE_TEST_RECORD_DEPENDENCIES = []  # eg. ["User"]
+    def test_receive_payment_cancellation(self):
+        pe = frappe.get_doc({
+            "doctype": "Payment Entry", "payment_type": "Receive",
+            "posting_date": frappe.utils.today(), "party": self.customer,
+            "account_paid_from": self.receivable_account, "account_paid_to": self.bank_account,
+            "amount": 500
+        }).insert()
+        pe.submit()
+        pe.cancel()
+        self.assertNetEffectIsZero(pe.doctype, pe.name)
 
-
-
-class IntegrationTestPaymentEntry(IntegrationTestCase):
-	"""
-	Integration tests for PaymentEntry.
-	Use this class for testing interactions between multiple components.
-	"""
-
-	pass
+    def test_pay_payment_submission(self):
+        pe = frappe.get_doc({
+            "doctype": "Payment Entry", "payment_type": "Pay",
+            "posting_date": frappe.utils.today(), "party": self.supplier,
+            "account_paid_from": self.bank_account, "account_paid_to": self.payable_account,
+            "amount": 1200
+        }).insert()
+        pe.submit()
+        self.assertVoucherBalanced(pe.doctype, pe.name)
+        
+    def test_pay_payment_cancellation(self):
+        pe = frappe.get_doc({
+            "doctype": "Payment Entry", "payment_type": "Pay",
+            "posting_date": frappe.utils.today(), "party": self.supplier,
+            "account_paid_from": self.bank_account, "account_paid_to": self.payable_account,
+            "amount": 1200
+        }).insert()
+        pe.submit()
+        pe.cancel()
+        self.assertNetEffectIsZero(pe.doctype, pe.name)
