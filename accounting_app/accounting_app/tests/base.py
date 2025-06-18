@@ -26,15 +26,31 @@ class AccountingTestCase(IntegrationTestCase):
         total_credit = sum(d.credit_amount or 0 for d in gl_entries)
         self.assertEqual(total_debit, total_credit, f"Voucher {voucher_name} is unbalanced.")
 
-    def assertNetEffectIsZero(self, voucher_doctype, voucher_name):
-        gl_entries = frappe.get_all("GL Entry", 
-            filters={"voucher_type": voucher_doctype, "voucher_number": voucher_name},
-            fields=["debit_amount", "credit_amount"]
-        )
-        total_debit = sum(d.debit_amount or 0 for d in gl_entries)
-        total_credit = sum(d.credit_amount or 0 for d in gl_entries)
-        self.assertEqual(total_debit, total_credit, f"Net effect for cancelled voucher {voucher_name} is not zero.")
 
+    def assertNetEffectIsZero(self, voucher_doctype, voucher_name):
+
+        gl_entries = frappe.get_all("GL Entry",
+            filters={"voucher_type": voucher_doctype, "voucher_number": voucher_name},
+            fields=["debit_amount", "credit_amount","is_cancelled"]
+        )
+
+        total_debit_on_submisson = sum(d.debit_amount or 0 for d in gl_entries if d.is_cancelled == 1)
+        total_credit_on_submisson = sum(d.credit_amount or 0 for d in gl_entries if d.is_cancelled == 1)
+        total_debit_on_cancel = sum(d.debit_amount or 0 for d in gl_entries if d.is_cancelled == 0)
+        total_credit_on_cancel = sum(d.credit_amount or 0 for d in gl_entries if d.is_cancelled == 0)
+
+        self.assertEqual(
+            total_debit_on_submisson,
+            total_credit_on_cancel,
+            f"Reversal credits ({total_credit_on_cancel}) do not match original debits ({total_debit_on_submisson}) for {voucher_name}."
+
+        )
+        self.assertEqual(
+            total_credit_on_submisson,
+            total_debit_on_cancel,
+            f"Reversal debits ({total_debit_on_cancel}) do not match original credits ({total_credit_on_submisson}) for {voucher_name}."
+
+        )
 
     def assertGLEntries(self, voucher_doctype, voucher_name, expected_entries):
         gl_entries = frappe.get_all("GL Entry", 
