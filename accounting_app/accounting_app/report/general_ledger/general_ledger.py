@@ -40,7 +40,10 @@ def get_data(filters):
         .orderby(gl_entry.posting_date, gl_entry.creation)
     ).run(as_dict=True)
 
-    balance = 0
+    if filters.get("from_date"):
+        query = query.where(gl_entry.posting_date >= filters.get("from_date"))
+    if filters.get("to_date"):
+        query = query.where(gl_entry.posting_date <= filters.get("to_date"))
     if filters.get("account"):
         query = query.where(gl_entry.account == filters.get("account"))
     if filters.get("party"):
