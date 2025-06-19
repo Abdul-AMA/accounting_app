@@ -9,6 +9,30 @@ frappe.ui.form.on('Payment Entry', {
                 }
             };
         });
+        
+        frm.set_query('account_paid_from', function() {
+            let account_filters = [
+                ['Account', 'is_group', '=', 0]
+            ];
+            if (frm.doc.payment_type === 'Receive') {
+                account_filters.push(['Account', 'account_type', '=', 'Asset']);
+            } else if (frm.doc.payment_type === 'Pay') {
+                account_filters.push(['Account', 'account_type', '=', 'Asset']);
+            }
+            return { filters: account_filters };
+        });
+
+        frm.set_query('account_paid_to', function() {
+            let account_filters = [
+                ['Account', 'is_group', '=', 0]
+            ];
+            if (frm.doc.payment_type === 'Receive') {
+                account_filters.push(['Account', 'account_type', '=', 'Asset']);
+            } else if (frm.doc.payment_type === 'Pay') {
+                account_filters.push(['Account', 'account_type', '=', 'Liability']);
+            }
+            return { filters: account_filters };
+        });        
     },
 
     party_type: function(frm) {
@@ -40,28 +64,6 @@ frappe.ui.form.on('Payment Entry', {
         }
         frm.refresh(); 
 
-        frm.set_query('account_paid_from', function() {
-            let account_filters = [
-                ['Account', 'is_group', '=', 0]
-            ];
-            if (frm.doc.payment_type === 'Receive') {
-                account_filters.push(['Account', 'account_type', '=', 'Asset']);
-            } else if (frm.doc.payment_type === 'Pay') {
-                account_filters.push(['Account', 'account_type', '=', 'Asset']);
-            }
-            return { filters: account_filters };
-        });
-
-        frm.set_query('account_paid_to', function() {
-            let account_filters = [
-                ['Account', 'is_group', '=', 0]
-            ];
-            if (frm.doc.payment_type === 'Receive') {
-                account_filters.push(['Account', 'account_type', '=', 'Asset']);
-            } else if (frm.doc.payment_type === 'Pay') {
-                account_filters.push(['Account', 'account_type', '=', 'Liability']);
-            }
-            return { filters: account_filters };
-        });
+y
     }
 });
