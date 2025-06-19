@@ -7,14 +7,14 @@ def execute(filters):
 
 def get_columns():
     return [
-        {"label": "Posting Date", "fieldname": "posting_date", "fieldtype": "Date", "width": 100},
-        {"label": "Account", "fieldname": "account", "fieldtype": "Link", "options": "Account", "width": 200},
+        {"label": "Posting Date", "fieldname": "posting_date", "fieldtype": "Date", "width": 150},
+       {"label": "Account", "fieldname": "account", "fieldtype": "Link", "options": "Account", "width": 150},
         {"label": "Debit", "fieldname": "debit_amount", "fieldtype": "Currency", "width": 150},
         {"label": "Credit", "fieldname": "credit_amount", "fieldtype": "Currency", "width": 150},
-        {"label": "Voucher Type", "fieldname": "voucher_type", "width": 120},
-        {"label": "Voucher No", "fieldname": "voucher_number", "fieldtype": "Dynamic Link", "options": "voucher_type", "width": 150},
-        {"label": "Party", "fieldname": "party", "fieldtype": "Link", "options": "Party", "width": 150},
-        {"label": "Remark", "fieldname": "remark", "width": 200}
+        {"label": "Voucher Type", "fieldname": "voucher_type", "width": 200},
+        {"label": "Voucher No", "fieldname": "voucher_number", "fieldtype": "Dynamic Link", "options": "voucher_type", "width": 200},
+        {"label": "Party", "fieldname": "party", "fieldtype": "Link", "options": "Party", "width": 170},
+        {"label": "Remark", "fieldname": "remark", "width": 400}    
     ]
 
 def get_data(filters):
