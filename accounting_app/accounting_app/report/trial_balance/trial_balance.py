@@ -22,20 +22,37 @@ def get_data(filters):
 
     as_on_date = filters.get("as_on_date")
 
+    gl_entry = frappe.qb.DocType("GL Entry")
+    
+    all_balances = (
+        frappe.qb.from_(gl_entry)
+        .select(
+            gl_entry.account,
+            (Sum(gl_entry.debit_amount) - Sum(gl_entry.credit_amount)).as_("balance")
+            )
+        .where(
+            (gl_entry.posting_date <= as_on_date)
+        )
+        .groupby(gl_entry.account)
+    ).run(as_dict=True)
+
+    balances_dict = {d.account: d.balance for d in all_balances}
+
+
     for acc in accounts:
         account_name = acc.get("name")
         
-        closing_balance = get_account_balance(account_name, as_on_date)
+        balance = balances_dict.get(account_name, 0)
 
         row = {"account": account_name}
-        if closing_balance > 0:  
-            row["debit"] = closing_balance
+        if balance >= 0:  
+            row["debit"] = balance
             row["credit"] = 0
-            total_debit += closing_balance
+            total_debit += balance
         else:
             row["debit"] = 0
-            row["credit"] = abs(closing_balance) 
-            total_credit += abs(closing_balance)
+            row["credit"] = abs(balance) 
+            total_credit += abs(balance)
         
         data.append(row)
 
@@ -48,16 +65,4 @@ def get_data(filters):
     
     return data
 
-def get_account_balance(account, to_date):
-    gl_entry = frappe.qb.DocType("GL Entry")
-    
-    balance = (
-        frappe.qb.from_(gl_entry)
-        .select(Sum(gl_entry.debit_amount) - Sum(gl_entry.credit_amount))
-        .where(
-            (gl_entry.account == account) &
-            (gl_entry.posting_date <= to_date)
-        )
-    ).run()
-    
-    return balance[0][0] if balance and balance[0] and balance[0][0] is not None else 0
+
