@@ -40,25 +40,28 @@ frappe.ui.form.on('Payment Entry', {
         }
         frm.refresh(); 
 
-
         frm.set_query('account_paid_from', function() {
-            let filters = {'is_group': 0}; 
-            if (payment_type === 'Receive') {
-                filters['account_type'] = 'Asset';
-            } else if (payment_type === 'Pay') {
-                filters['account_type'] = 'Asset';
+            let account_filters = [
+                ['Account', 'is_group', '=', 0]
+            ];
+            if (frm.doc.payment_type === 'Receive') {
+                account_filters.push(['Account', 'account_type', '=', 'Asset']);
+            } else if (frm.doc.payment_type === 'Pay') {
+                account_filters.push(['Account', 'account_type', '=', 'Asset']);
             }
-            return { filters: filters };
+            return { filters: account_filters };
         });
 
         frm.set_query('account_paid_to', function() {
-            let filters = {'is_group': 0}; 
-            if (payment_type === 'Receive') {
-                filters['account_type'] = 'Asset';
-            } else if (payment_type === 'Pay') {
-                filters['account_type'] = 'Liability';
+            let account_filters = [
+                ['Account', 'is_group', '=', 0]
+            ];
+            if (frm.doc.payment_type === 'Receive') {
+                account_filters.push(['Account', 'account_type', '=', 'Asset']);
+            } else if (frm.doc.payment_type === 'Pay') {
+                account_filters.push(['Account', 'account_type', '=', 'Liability']);
             }
-            return { filters: filters };
+            return { filters: account_filters };
         });
     }
 });

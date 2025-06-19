@@ -1,5 +1,6 @@
 {
  "actions": [],
+ "allow_import": 1,
  "allow_rename": 1,
  "autoname": "field:item_name",
  "creation": "2025-06-02 12:17:34.962165",
@@ -46,7 +47,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-06-02 12:19:53.740030",
+ "modified": "2025-06-18 15:24:57.567319",
  "modified_by": "Administrator",
  "module": "accounting_app",
  "name": "Item",
