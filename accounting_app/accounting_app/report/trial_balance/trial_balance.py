@@ -8,7 +8,7 @@ def execute(filters):
 
 def get_columns():
     return [
-        {"label": "Account", "fieldname": "account", "fieldtype": "Link", "options": "Account", "width": 400},
+        {"label": "Account", "fieldname": "account", "fieldtype": "data", "options": "Account", "width": 400},
         {"label": "Debit", "fieldname": "debit", "fieldtype": "Currency", "width": 150},
         {"label": "Credit", "fieldname": "credit", "fieldtype": "Currency", "width": 150},
     ]
