@@ -65,12 +65,16 @@ def get_report_summary(total_debit, total_credit):
         {
             "label": "Total Debit",
             "value": total_debit,
-            "indicator": "Green"
+            "indicator": "Green",
+            "datatype": "Currency"
+            
         },
         {
             "label": "Total Credit",
             "value": total_credit,
-            "indicator": "Red"
+            "indicator": "Red",
+            "datatype": "Currency"
+            
         }
     ]
 
