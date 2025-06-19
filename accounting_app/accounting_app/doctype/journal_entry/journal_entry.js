@@ -1,4 +1,14 @@
 frappe.ui.form.on('Journal Entry', {
+
+    refresh: function(frm) {
+        frm.set_query('account', 'accounting_entries', function(doc, cdt, cdn) {
+            return {
+                filters: {
+                    'is_group': 0
+                }
+            };
+        });
+    },
     calculate_totals: function(frm) {
         let total_debit = 0;
         let total_credit = 0;
