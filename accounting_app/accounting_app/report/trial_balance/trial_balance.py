@@ -3,12 +3,13 @@ from frappe.query_builder.functions import Sum
 
 def execute(filters):
     columns = get_columns()
-    data = get_data(filters)
-    return columns, data
+    data, total_debit, total_credit = get_data(filters)
+    summary = get_report_summary(total_debit, total_credit)
+    return columns, data, None,None, summary
 
 def get_columns():
     return [
-        {"label": "Account", "fieldname": "account", "fieldtype": "data", "options": "Account", "width": 400},
+        {"label": "Account", "fieldname": "account", "fieldtype": "Link", "options": "Account", "width": 400},
         {"label": "Debit", "fieldname": "debit", "fieldtype": "Currency", "width": 150},
         {"label": "Credit", "fieldname": "credit", "fieldtype": "Currency", "width": 150},
     ]
@@ -56,13 +57,20 @@ def get_data(filters):
         
         data.append(row)
 
-    if data:
-        data.append({
-            "account": "Total",
-            "debit": total_debit,
-            "credit": total_credit
-        })
-    
-    return data
+    return data, total_debit, total_credit
 
+
+def get_report_summary(total_debit, total_credit):
+    return [
+        {
+            "label": "Total Debit",
+            "value": total_debit,
+            "indicator": "Green"
+        },
+        {
+            "label": "Total Credit",
+            "value": total_credit,
+            "indicator": "Red"
+        }
+    ]
 
