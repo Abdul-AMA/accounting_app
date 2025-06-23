@@ -12,8 +12,7 @@
   "item_name",
   "default_uom",
   "standard_selling_rate",
-  "maintain_stock",
-  "default_warehouse"
+  "maintain_stock"
  ],
  "fields": [
   {
@@ -50,18 +49,12 @@
    "fieldname": "maintain_stock",
    "fieldtype": "Check",
    "label": "Maintain Stock"
-  },
-  {
-   "fieldname": "default_warehouse",
-   "fieldtype": "Link",
-   "label": "Default Warehouse",
-   "options": "Warehouse"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-06-23 13:22:34.732093",
+ "modified": "2025-06-23 15:33:02.522320",
  "modified_by": "Administrator",
  "module": "accounting_app",
  "name": "Item",

@@ -16,7 +16,7 @@
   "total_qty",
   "total_amount",
   "credit_to",
-  "expense_account",
+  "debit_to",
   "amended_from"
  ],
  "fields": [
@@ -70,14 +70,6 @@
    "reqd": 1
   },
   {
-   "fieldname": "expense_account",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Expense Account",
-   "options": "Account",
-   "reqd": 1
-  },
-  {
    "fieldname": "amended_from",
    "fieldtype": "Link",
    "label": "Amended From",
@@ -98,13 +90,23 @@
    "fieldtype": "Link",
    "label": "Warehouse",
    "options": "Warehouse"
+  },
+  {
+   "default": "Stock In Hand",
+   "fieldname": "debit_to",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Debit To",
+   "options": "Account",
+   "read_only": 1,
+   "reqd": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-06-23 13:31:16.250319",
+ "modified": "2025-06-23 15:28:31.429412",
  "modified_by": "Administrator",
  "module": "accounting_app",
  "name": "Purchase Invoice",

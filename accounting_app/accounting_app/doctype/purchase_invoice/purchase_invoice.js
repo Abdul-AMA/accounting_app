@@ -36,6 +36,14 @@ frappe.ui.form.on('Purchase Invoice', {
         frm.set_value('total_amount', total_amount);
         frm.refresh_field('total_qty');
         frm.refresh_field('total_amount');
+    },
+    default_warehouse: function(frm) {
+        if (frm.doc.items && frm.doc.items.length) {
+            frm.doc.items.forEach(function(row) {
+                row.warehouse = frm.doc.default_warehouse;
+            });
+        }
+        frm.refresh_field('items');
     }
 });
 
@@ -54,5 +62,10 @@ frappe.ui.form.on('Purchase Invoice Item', {
     },
     items_remove: function(frm) {
         frm.events.calculate_totals(frm);
-    }
+    },
+    items_add: function(frm, cdt, cdn) {
+        let row = locals[cdt][cdn];
+        row.warehouse = frm.doc.default_warehouse;
+        frm.refresh_field('items');
+    }, 
 });
