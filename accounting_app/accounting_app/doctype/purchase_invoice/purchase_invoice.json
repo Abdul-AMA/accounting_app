@@ -9,6 +9,7 @@
   "section_break_0kwn",
   "naming_series",
   "supplier",
+  "default_warehouse",
   "posting_date",
   "payment_due_date",
   "items",
@@ -91,13 +92,19 @@
    "fieldtype": "Date",
    "label": "Payment Due Date",
    "reqd": 1
+  },
+  {
+   "fieldname": "default_warehouse",
+   "fieldtype": "Link",
+   "label": "Warehouse",
+   "options": "Warehouse"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-06-17 12:58:20.424151",
+ "modified": "2025-06-23 13:31:16.250319",
  "modified_by": "Administrator",
  "module": "accounting_app",
  "name": "Purchase Invoice",
