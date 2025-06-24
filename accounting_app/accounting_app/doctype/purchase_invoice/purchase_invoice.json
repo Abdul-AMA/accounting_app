@@ -16,8 +16,8 @@
   "total_qty",
   "total_amount",
   "credit_to",
-  "stock_debit_account",
-  "expense_debit_account",
+  "stock_account",
+  "expense_account",
   "amended_from"
  ],
  "fields": [
@@ -87,32 +87,32 @@
    "reqd": 1
   },
   {
-   "fieldname": "stock_debit_account",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Stock Debit Account",
-   "options": "Account",
-   "reqd": 1
-  },
-  {
-   "fieldname": "expense_debit_account",
-   "fieldtype": "Link",
-   "label": "Expense Debit Account",
-   "options": "Account",
-   "reqd": 1
-  },
-  {
    "fieldname": "warehouse",
    "fieldtype": "Link",
    "label": "Warehouse",
    "options": "Warehouse"
+  },
+  {
+   "fieldname": "stock_account",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Stock Account",
+   "options": "Account",
+   "reqd": 1
+  },
+  {
+   "fieldname": "expense_account",
+   "fieldtype": "Link",
+   "label": "Expense Account",
+   "options": "Account",
+   "reqd": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-06-24 12:54:32.299295",
+ "modified": "2025-06-24 15:04:53.974914",
  "modified_by": "Administrator",
  "module": "accounting_app",
  "name": "Purchase Invoice",
