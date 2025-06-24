@@ -83,20 +83,21 @@ frappe.ui.form.on('Purchase Invoice Item', {
 
             frappe.model.set_value(cdt, cdn, 'is_stock_item', is_stock_item ? 1 : 0);
 
-            frm.fields_dict.items.grid.toggle_reqd('warehouse', is_stock_item);
-            frm.fields_dict.items.grid.toggle_reqd('stock_account', is_stock_item);
-            frm.fields_dict.items.grid.toggle_reqd('expense_account', !is_stock_item);
-
             const grid_row = frm.fields_dict.items.grid.get_row(cdn);
-
             if (grid_row) {
-                grid_row.toggle_display('warehouse', is_stock_item);
-                grid_row.toggle_display('stock_account', is_stock_item);
-                grid_row.toggle_display('expense_account', !is_stock_item);
+                grid_row.toggle_enable('warehouse', is_stock_item);
+                grid_row.toggle_enable('stock_account', is_stock_item);
+                grid_row.toggle_enable('expense_account', !is_stock_item);
+
+                if (is_stock_item) {
+                    frappe.model.set_value(cdt, cdn, 'expense_account', null);
+                } else {
+                    frappe.model.set_value(cdt, cdn, 'warehouse', null);
+                    frappe.model.set_value(cdt, cdn, 'stock_account', null);
+                }
             }
         });
     },
-
 });
 
 
