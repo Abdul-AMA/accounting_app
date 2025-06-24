@@ -14,13 +14,13 @@ frappe.ui.form.on('Purchase Invoice', {
             };
         });
 
-        frm.set_query('stock_debit_account', function() {
+        frm.set_query('stock_account', function() {
             return {
                 filters: { 'account_type': 'Asset', 'is_group': 0 }
             };
         });
 
-        frm.set_query('expense_debit_account', function() {
+        frm.set_query('expense_account', function() {
             return {
                 filters: { 'account_type': 'Expense', 'is_group': 0 }
             };
