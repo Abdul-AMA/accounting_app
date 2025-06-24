@@ -16,8 +16,6 @@
   "total_qty",
   "total_amount",
   "credit_to",
-  "stock_account",
-  "expense_account",
   "amended_from"
  ],
  "fields": [
@@ -91,28 +89,13 @@
    "fieldtype": "Link",
    "label": "Warehouse",
    "options": "Warehouse"
-  },
-  {
-   "fieldname": "stock_account",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Stock Account",
-   "options": "Account",
-   "reqd": 1
-  },
-  {
-   "fieldname": "expense_account",
-   "fieldtype": "Link",
-   "label": "Expense Account",
-   "options": "Account",
-   "reqd": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-06-24 15:04:53.974914",
+ "modified": "2025-06-24 16:21:03.671127",
  "modified_by": "Administrator",
  "module": "accounting_app",
  "name": "Purchase Invoice",
