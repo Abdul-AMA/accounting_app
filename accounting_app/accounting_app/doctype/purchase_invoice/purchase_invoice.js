@@ -14,7 +14,13 @@ frappe.ui.form.on('Purchase Invoice', {
             };
         });
 
-        frm.set_query('expense_account', function() {
+        frm.set_query('stock_debit_account', function() {
+            return {
+                filters: { 'account_type': 'Asset', 'is_group': 0 }
+            };
+        });
+
+        frm.set_query('expense_debit_account', function() {
             return {
                 filters: { 'account_type': 'Expense', 'is_group': 0 }
             };
@@ -37,13 +43,12 @@ frappe.ui.form.on('Purchase Invoice', {
         frm.refresh_field('total_qty');
         frm.refresh_field('total_amount');
     },
-    default_warehouse: function(frm) {
+        default_warehouse: function(frm) {
         if (frm.doc.items && frm.doc.items.length) {
             frm.doc.items.forEach(function(row) {
-                row.warehouse = frm.doc.default_warehouse;
+                frappe.model.set_value(row.doctype, row.name, 'warehouse', frm.doc.warehouse);
             });
         }
-        frm.refresh_field('items');
     }
 });
 
@@ -64,8 +69,6 @@ frappe.ui.form.on('Purchase Invoice Item', {
         frm.events.calculate_totals(frm);
     },
     items_add: function(frm, cdt, cdn) {
-        let row = locals[cdt][cdn];
-        row.warehouse = frm.doc.default_warehouse;
-        frm.refresh_field('items');
-    }, 
+        frappe.model.set_value(cdt, cdn, 'warehouse', frm.doc.warehouse);
+    }
 });
