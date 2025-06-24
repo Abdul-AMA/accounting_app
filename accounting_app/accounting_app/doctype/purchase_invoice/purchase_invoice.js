@@ -14,13 +14,13 @@ frappe.ui.form.on('Purchase Invoice', {
             };
         });
 
-        frm.set_query('stock_account', function() {
+        frm.set_query('stock_account', 'items', () => {
             return {
                 filters: { 'account_type': 'Asset', 'is_group': 0 }
             };
         });
 
-        frm.set_query('expense_account', function() {
+        frm.set_query('expense_account', 'items', () => {
             return {
                 filters: { 'account_type': 'Expense', 'is_group': 0 }
             };
@@ -43,10 +43,13 @@ frappe.ui.form.on('Purchase Invoice', {
         frm.refresh_field('total_qty');
         frm.refresh_field('total_amount');
     },
-        default_warehouse: function(frm) {
-        if (frm.doc.items && frm.doc.items.length) {
-            frm.doc.items.forEach(function(row) {
-                frappe.model.set_value(row.doctype, row.name, 'warehouse', frm.doc.warehouse);
+    
+    warehouse: function(frm) {
+        if (frm.doc.items) {
+            frm.doc.items.forEach(row => {
+                if (row.is_stock_item) {
+                    frappe.model.set_value(row.doctype, row.name, 'warehouse', frm.doc.warehouse);
+                }
             });
         }
     }
@@ -70,5 +73,30 @@ frappe.ui.form.on('Purchase Invoice Item', {
     },
     items_add: function(frm, cdt, cdn) {
         frappe.model.set_value(cdt, cdn, 'warehouse', frm.doc.warehouse);
-    }
+    },
+    item: function(frm, cdt, cdn) {
+        const row = locals[cdt][cdn];
+
+        if (!row.item) return;
+        frappe.db.get_value('Item', row.item, 'maintain_stock', (r) => {
+            const is_stock_item = !!r.maintain_stock;
+
+            frappe.model.set_value(cdt, cdn, 'is_stock_item', is_stock_item ? 1 : 0);
+
+            frm.fields_dict.items.grid.toggle_reqd('warehouse', is_stock_item);
+            frm.fields_dict.items.grid.toggle_reqd('stock_account', is_stock_item);
+            frm.fields_dict.items.grid.toggle_reqd('expense_account', !is_stock_item);
+
+            const grid_row = frm.fields_dict.items.grid.get_row(cdn);
+
+            if (grid_row) {
+                grid_row.toggle_display('warehouse', is_stock_item);
+                grid_row.toggle_display('stock_account', is_stock_item);
+                grid_row.toggle_display('expense_account', !is_stock_item);
+            }
+        });
+    },
+
 });
+
+
