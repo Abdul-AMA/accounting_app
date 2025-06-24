@@ -14,20 +14,43 @@ class PurchaseInvoice(AccountingController):
         super().on_cancel()
         self.make_reverse_stock_ledger_entries()
 
-    def make_gl_entries(self):        
-        self._create_gl_entry(
-            posting_date=self.posting_date,
-            account= self.debit_to,
-            party=self.supplier,
-            debit=self.total_amount,
-            credit=0
-        )
+    def make_gl_entries(self):
+
+        stock_total = 0
+        expense_total = 0
+
+        for item in self.get("items"):
+            maintain_stock = frappe.db.get_value("Item", item.item, "maintain_stock")
+            
+            if maintain_stock:
+                stock_total += item.amount
+            else:
+                expense_total += item.amount
 
         self._create_gl_entry(
             posting_date=self.posting_date,
             account=self.credit_to,
             party=self.supplier,
             debit=0,
+        if stock_total > 0:
+            self._create_gl_entry(
+                posting_date=self.posting_date,
+                account=self.stock_debit_account, 
+                party=self.supplier,
+                debit=stock_total,
+                credit=0
+            )
+
+        if expense_total > 0:
+            self._create_gl_entry(
+                posting_date=self.posting_date,
+                account=self.expense_debit_account,
+                party=self.supplier,
+                debit=expense_total,
+                credit=0
+            )
+            
+
             credit=self.total_amount,
             due_date=self.payment_due_date
         )
