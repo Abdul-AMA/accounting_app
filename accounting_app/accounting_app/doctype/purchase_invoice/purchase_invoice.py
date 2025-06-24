@@ -16,17 +16,6 @@ class PurchaseInvoice(AccountingController):
 
     def make_gl_entries(self):
 
-        stock_total = 0
-        expense_total = 0
-
-        for item in self.get("items"):
-            maintain_stock = frappe.db.get_value("Item", item.item, "maintain_stock")
-            
-            if maintain_stock:
-                stock_total += item.amount
-            else:
-                expense_total += item.amount
-
         self._create_gl_entry(
             posting_date=self.posting_date,
             account=self.credit_to,
@@ -35,24 +24,23 @@ class PurchaseInvoice(AccountingController):
             credit=self.total_amount,
             due_date=self.payment_due_date
         )
+        debit_account_totals = {}
 
-        if stock_total > 0:
-            self._create_gl_entry(
-                posting_date=self.posting_date,
-                account=self.stock_debit_account, 
-                party=self.supplier,
-                debit=stock_total,
-                credit=0
-            )
+        for item in self.get("items"):
+            debit_account = item.stock_account or item.expense_account
+            
+            debit_account_totals.setdefault(debit_account, 0)
+            debit_account_totals[debit_account] += item.amount
 
-        if expense_total > 0:
-            self._create_gl_entry(
-                posting_date=self.posting_date,
-                account=self.expense_debit_account,
-                party=self.supplier,
-                debit=expense_total,
-                credit=0
-            )
+        for account, total_debit in debit_account_totals.items():
+            if total_debit > 0:
+                self._create_gl_entry(
+                    posting_date=self.posting_date,
+                    account=account,
+                    party=self.supplier,
+                    debit=total_debit,
+                    credit=0
+                )
             
 
     def make_stock_ledger_entries(self):
