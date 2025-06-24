@@ -9,14 +9,15 @@
   "section_break_0kwn",
   "naming_series",
   "supplier",
-  "default_warehouse",
+  "warehouse",
   "posting_date",
   "payment_due_date",
   "items",
   "total_qty",
   "total_amount",
   "credit_to",
-  "debit_to",
+  "stock_debit_account",
+  "expense_debit_account",
   "amended_from"
  ],
  "fields": [
@@ -86,27 +87,32 @@
    "reqd": 1
   },
   {
-   "fieldname": "default_warehouse",
+   "fieldname": "stock_debit_account",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Stock Debit Account",
+   "options": "Account",
+   "reqd": 1
+  },
+  {
+   "fieldname": "expense_debit_account",
+   "fieldtype": "Link",
+   "label": "Expense Debit Account",
+   "options": "Account",
+   "reqd": 1
+  },
+  {
+   "fieldname": "warehouse",
    "fieldtype": "Link",
    "label": "Warehouse",
    "options": "Warehouse"
-  },
-  {
-   "default": "Stock In Hand",
-   "fieldname": "debit_to",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Debit To",
-   "options": "Account",
-   "read_only": 1,
-   "reqd": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-06-23 15:28:31.429412",
+ "modified": "2025-06-24 12:54:32.299295",
  "modified_by": "Administrator",
  "module": "accounting_app",
  "name": "Purchase Invoice",

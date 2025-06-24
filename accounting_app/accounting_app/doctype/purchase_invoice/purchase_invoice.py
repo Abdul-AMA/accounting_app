@@ -32,6 +32,10 @@ class PurchaseInvoice(AccountingController):
             account=self.credit_to,
             party=self.supplier,
             debit=0,
+            credit=self.total_amount,
+            due_date=self.payment_due_date
+        )
+
         if stock_total > 0:
             self._create_gl_entry(
                 posting_date=self.posting_date,
@@ -51,17 +55,13 @@ class PurchaseInvoice(AccountingController):
             )
             
 
-            credit=self.total_amount,
-            due_date=self.payment_due_date
-        )
-
     def make_stock_ledger_entries(self):
         for item in self.get("items"):
-            maintain_stock = frappe.db.get_value("Item", item.item_code, "maintain_stock")
+            maintain_stock = frappe.db.get_value("Item", item.item, "maintain_stock")
 
             if maintain_stock:
                 sle = frappe.new_doc("Stock Ledger Entry")
-                sle.item = item.item_code
+                sle.item = item.item
                 sle.warehouse = item.warehouse
                 sle.posting_date = self.posting_date
                 sle.actual_qty = item.qty  
@@ -73,11 +73,11 @@ class PurchaseInvoice(AccountingController):
 
     def make_reverse_stock_ledger_entries(self):
         for item in self.get("items"):
-            maintain_stock = frappe.db.get_value("Item", item.item_code, "maintain_stock")
+            maintain_stock = frappe.db.get_value("Item", item.item, "maintain_stock")
 
             if maintain_stock:
                 sle = frappe.new_doc("Stock Ledger Entry")
-                sle.item = item.item_code
+                sle.item = item.item
                 sle.warehouse = item.warehouse
                 sle.posting_date = self.posting_date
                 sle.actual_qty = -item.qty

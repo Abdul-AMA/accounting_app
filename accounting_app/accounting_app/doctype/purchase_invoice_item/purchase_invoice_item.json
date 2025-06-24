@@ -53,15 +53,14 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Warehouse",
-   "options": "Warehouse",
-   "reqd": 1
+   "options": "Warehouse"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-06-23 13:31:45.090024",
+ "modified": "2025-06-24 13:52:05.819753",
  "modified_by": "Administrator",
  "module": "accounting_app",
  "name": "Purchase Invoice Item",
