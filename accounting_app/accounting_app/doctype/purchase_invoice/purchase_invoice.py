@@ -27,7 +27,10 @@ class PurchaseInvoice(AccountingController):
         debit_account_totals = {}
 
         for item in self.get("items"):
-            debit_account = item.stock_account or item.expense_account
+            if item.is_stock:
+                debit_account = item.stock_account 
+            else:
+                debit_account = item.expense_account
             
             debit_account_totals.setdefault(debit_account, 0)
             debit_account_totals[debit_account] += item.amount
