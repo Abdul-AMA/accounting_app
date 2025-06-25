@@ -44,17 +44,21 @@ frappe.ui.form.on('Purchase Invoice', {
         frm.refresh_field('total_amount');
     },
     
-    warehouse: function(frm) {
-        if (frm.doc.items) {
-            frm.doc.items.forEach(row => {
-                if (row.is_stock_item) {
-                    frappe.model.set_value(row.doctype, row.name, 'warehouse', frm.doc.warehouse);
-                }else {
-                    frappe.model.set_value(row.doctype, row.name, 'warehouse', '');
-                }   
-            });
+    warehouse: async function(frm) {
+        if (!frm.doc.warehouse || !frm.doc.items) return;
+        const { message } = await frappe.db.get_value('Warehouse', frm.doc.warehouse, 'account');
+        const warehouse_account = message?.account;
+        for (const row of frm.doc.items) {
+            if (row.is_stock) {
+                frappe.model.set_value(row.doctype, row.name, 'warehouse', frm.doc.warehouse);
+                if (warehouse_account) {
+                    frappe.model.set_value(row.doctype, row.name, 'stock_account', warehouse_account);
+                }
+            } else {
+                frappe.model.set_value(row.doctype, row.name, 'warehouse', '');
+            }
         }
-    },
+    }
 });
 
 frappe.ui.form.on('Purchase Invoice Item', {
@@ -77,13 +81,19 @@ frappe.ui.form.on('Purchase Invoice Item', {
         const row = locals[cdt][cdn];
 
         if (!row.item) return;
-        frappe.db.get_value('Item', row.item, 'maintain_stock', (r) => {
+        frappe.db.get_value('Item', row.item, 'maintain_stock', async (r) => {
             const is_stock_item = !!r.maintain_stock;
 
             frappe.model.set_value(cdt, cdn, 'is_stock_item', is_stock_item ? 1 : 0);
             if (is_stock_item) {
+                const { message } = await frappe.db.get_value('Warehouse', frm.doc.warehouse, 'account');
+                const warehouse_account = message?.account;
+                frappe.model.set_value(cdt, cdn, 'stock_account', warehouse_account);     
                 frappe.model.set_value(cdt, cdn, 'warehouse', frm.doc.warehouse);
             }else {
+                const { message } = await frappe.db.get_value('Item', row.item, 'expense_account');
+                const expense_account = message?.expense_account;
+                    frappe.model.set_value(cdt, cdn, 'expense_account', expense_account);
                 frappe.model.set_value(cdt, cdn, 'warehouse', '');
             }
             const grid_row = frm.fields_dict.items.grid.get_row(cdn);
@@ -94,6 +104,15 @@ frappe.ui.form.on('Purchase Invoice Item', {
             }
         });
     },
+    warehouse: async function(frm, cdt, cdn) {
+        const row = locals[cdt][cdn];
+        if (!row.warehouse) return;
+        const { message } = await frappe.db.get_value('Warehouse', row.warehouse, 'account');
+        const warehouse_account = message?.account;
+        if (warehouse_account) {
+            frappe.model.set_value(cdt, cdn, 'stock_account', warehouse_account);
+        }
+    }
 });
 
 

@@ -12,7 +12,8 @@
   "item_name",
   "default_uom",
   "standard_selling_rate",
-  "maintain_stock"
+  "maintain_stock",
+  "expense_account"
  ],
  "fields": [
   {
@@ -49,12 +50,19 @@
    "fieldname": "maintain_stock",
    "fieldtype": "Check",
    "label": "Maintain Stock"
+  },
+  {
+   "depends_on": "eval:!doc.maintain_stock",
+   "fieldname": "expense_account",
+   "fieldtype": "Link",
+   "label": "Expense account",
+   "options": "Account"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-06-23 15:33:02.522320",
+ "modified": "2025-06-25 14:50:39.422195",
  "modified_by": "Administrator",
  "module": "accounting_app",
  "name": "Item",

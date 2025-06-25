@@ -85,6 +85,7 @@
    "reqd": 1
   },
   {
+   "default": "GE warehouse",
    "fieldname": "warehouse",
    "fieldtype": "Link",
    "label": "Warehouse",
@@ -95,7 +96,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-06-24 16:21:03.671127",
+ "modified": "2025-06-25 15:01:56.910326",
  "modified_by": "Administrator",
  "module": "accounting_app",
  "name": "Purchase Invoice",

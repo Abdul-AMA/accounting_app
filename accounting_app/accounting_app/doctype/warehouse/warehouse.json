@@ -12,7 +12,8 @@
   "is_group",
   "old_parent",
   "parent_warehouse",
-  "warehouse_name"
+  "warehouse_name",
+  "account"
  ],
  "fields": [
   {
@@ -61,13 +62,20 @@
    "label": "Warehouse Name",
    "reqd": 1,
    "unique": 1
+  },
+  {
+   "fieldname": "account",
+   "fieldtype": "Link",
+   "label": "Account",
+   "options": "Account",
+   "reqd": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_tree": 1,
  "links": [],
- "modified": "2025-06-23 10:56:12.618967",
+ "modified": "2025-06-25 13:11:16.124632",
  "modified_by": "Administrator",
  "module": "accounting_app",
  "name": "Warehouse",
