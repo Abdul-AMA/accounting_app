@@ -49,29 +49,12 @@ frappe.ui.form.on('Purchase Invoice', {
             frm.doc.items.forEach(row => {
                 if (row.is_stock_item) {
                     frappe.model.set_value(row.doctype, row.name, 'warehouse', frm.doc.warehouse);
-                }
-            });
-        }
-    },
-    before_save: function(frm) {
-        if (frm.doc.items) {
-            frm.doc.items.forEach(row => {
-                const grid_row = frm.fields_dict.items.grid.get_row(row.name);
-                const is_stock = row.is_stock;
-                if (!is_stock) {
+                }else {
                     frappe.model.set_value(row.doctype, row.name, 'warehouse', '');
-                }
-                if (grid_row) {
-                    grid_row.toggle_display('warehouse', is_stock);
-                    grid_row.toggle_display('stock_account', is_stock);
-                    grid_row.toggle_display('expense_account', !is_stock);
-                }
+                }   
             });
         }
     },
-    after_save: function(frm) {
-        frm.refresh();
-    }
 });
 
 frappe.ui.form.on('Purchase Invoice Item', {
@@ -90,9 +73,6 @@ frappe.ui.form.on('Purchase Invoice Item', {
     items_remove: function(frm) {
         frm.events.calculate_totals(frm);
     },
-    items_add: function(frm, cdt, cdn) {
-        frappe.model.set_value(cdt, cdn, 'warehouse', frm.doc.warehouse);
-    },
     item: function(frm, cdt, cdn) {
         const row = locals[cdt][cdn];
 
@@ -101,7 +81,11 @@ frappe.ui.form.on('Purchase Invoice Item', {
             const is_stock_item = !!r.maintain_stock;
 
             frappe.model.set_value(cdt, cdn, 'is_stock_item', is_stock_item ? 1 : 0);
-
+            if (is_stock_item) {
+                frappe.model.set_value(cdt, cdn, 'warehouse', frm.doc.warehouse);
+            }else {
+                frappe.model.set_value(cdt, cdn, 'warehouse', '');
+            }
             const grid_row = frm.fields_dict.items.grid.get_row(cdn);
             if (grid_row) {
                 grid_row.toggle_display('warehouse', is_stock_item);
