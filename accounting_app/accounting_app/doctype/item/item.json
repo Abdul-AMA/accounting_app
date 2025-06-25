@@ -13,7 +13,7 @@
   "default_uom",
   "standard_selling_rate",
   "maintain_stock",
-  "default_warehouse"
+  "expense_account"
  ],
  "fields": [
   {
@@ -52,16 +52,17 @@
    "label": "Maintain Stock"
   },
   {
-   "fieldname": "default_warehouse",
+   "depends_on": "eval:!doc.maintain_stock",
+   "fieldname": "expense_account",
    "fieldtype": "Link",
-   "label": "Default Warehouse",
-   "options": "Warehouse"
+   "label": "Expense account",
+   "options": "Account"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-06-23 13:22:34.732093",
+ "modified": "2025-06-25 14:50:39.422195",
  "modified_by": "Administrator",
  "module": "accounting_app",
  "name": "Item",

@@ -9,14 +9,13 @@
   "section_break_0kwn",
   "naming_series",
   "supplier",
-  "default_warehouse",
+  "warehouse",
   "posting_date",
   "payment_due_date",
   "items",
   "total_qty",
   "total_amount",
   "credit_to",
-  "expense_account",
   "amended_from"
  ],
  "fields": [
@@ -70,14 +69,6 @@
    "reqd": 1
   },
   {
-   "fieldname": "expense_account",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Expense Account",
-   "options": "Account",
-   "reqd": 1
-  },
-  {
    "fieldname": "amended_from",
    "fieldtype": "Link",
    "label": "Amended From",
@@ -94,7 +85,8 @@
    "reqd": 1
   },
   {
-   "fieldname": "default_warehouse",
+   "default": "GE warehouse",
+   "fieldname": "warehouse",
    "fieldtype": "Link",
    "label": "Warehouse",
    "options": "Warehouse"
@@ -104,7 +96,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-06-23 13:31:16.250319",
+ "modified": "2025-06-25 15:01:56.910326",
  "modified_by": "Administrator",
  "module": "accounting_app",
  "name": "Purchase Invoice",

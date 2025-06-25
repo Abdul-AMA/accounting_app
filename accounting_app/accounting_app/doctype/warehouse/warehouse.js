@@ -1,8 +1,11 @@
-// Copyright (c) 2025, abood-ama and contributors
-// For license information, please see license.txt
+frappe.ui.form.on("Warehouse", {
+        refresh: function(frm) {
 
-// frappe.ui.form.on("Warehouse", {
-// 	refresh(frm) {
+        frm.set_query('account', function() {
+            return {
+                filters: { 'account_type': 'asset', 'is_group': 0 }
+            };
+        });
 
-// 	},
-// });
+   },
+});
