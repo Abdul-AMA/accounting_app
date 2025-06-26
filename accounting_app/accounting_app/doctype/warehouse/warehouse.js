@@ -6,6 +6,11 @@ frappe.ui.form.on("Warehouse", {
                 filters: { 'account_type': 'asset', 'is_group': 0 }
             };
         });
+        frm.set_query('cogs_account', function() {
+            return {
+                filters: { 'account_type': 'expense', 'is_group': 0 }
+            };
+        });
 
    },
 });
