@@ -13,7 +13,8 @@
   "old_parent",
   "parent_warehouse",
   "warehouse_name",
-  "account"
+  "account",
+  "cogs_account"
  ],
  "fields": [
   {
@@ -69,13 +70,20 @@
    "label": "Account",
    "options": "Account",
    "reqd": 1
+  },
+  {
+   "fieldname": "cogs_account",
+   "fieldtype": "Link",
+   "label": "COGS Account",
+   "options": "Account",
+   "reqd": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_tree": 1,
  "links": [],
- "modified": "2025-06-25 13:11:16.124632",
+ "modified": "2025-06-26 13:33:44.176698",
  "modified_by": "Administrator",
  "module": "accounting_app",
  "name": "Warehouse",

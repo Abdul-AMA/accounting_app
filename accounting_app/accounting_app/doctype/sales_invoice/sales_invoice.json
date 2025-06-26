@@ -9,6 +9,7 @@
   "section_break_ov2j",
   "naming_series",
   "customer",
+  "warehouse",
   "posting_date",
   "payment_due_date",
   "items",
@@ -92,13 +93,20 @@
    "print_hide": 1,
    "read_only": 1,
    "search_index": 1
+  },
+  {
+   "default": "GE warehouse",
+   "fieldname": "warehouse",
+   "fieldtype": "Link",
+   "label": "Warehouse",
+   "options": "Warehouse"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-06-17 12:22:31.632488",
+ "modified": "2025-06-26 13:32:23.654426",
  "modified_by": "Administrator",
  "module": "accounting_app",
  "name": "Sales Invoice",
