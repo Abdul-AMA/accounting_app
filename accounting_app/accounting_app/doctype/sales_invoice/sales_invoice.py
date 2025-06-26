@@ -77,8 +77,7 @@ class SalesInvoice(AccountingController):
 
     def make_stock_ledger_entries(self):
         for item in self.get("items"):
-            maintain_stock = frappe.db.get_value("Item", item.item, "maintain_stock")
-            if maintain_stock:
+            if item.is_stock:
                 sle = frappe.new_doc("Stock Ledger Entry")
                 sle.item = item.item
                 sle.warehouse = item.warehouse
@@ -92,8 +91,7 @@ class SalesInvoice(AccountingController):
 
     def make_reverse_stock_ledger_entries(self):
         for item in self.get("items"):
-            maintain_stock = frappe.db.get_value("Item", item.item, "maintain_stock")
-            if maintain_stock:
+            if item.is_stock:
                 sle = frappe.new_doc("Stock Ledger Entry")
                 sle.item = item.item
                 sle.warehouse = item.warehouse
