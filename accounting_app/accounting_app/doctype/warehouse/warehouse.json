@@ -14,7 +14,7 @@
   "parent_warehouse",
   "warehouse_name",
   "account",
-  "cogs_account"
+  "expense_account"
  ],
  "fields": [
   {
@@ -72,9 +72,9 @@
    "reqd": 1
   },
   {
-   "fieldname": "cogs_account",
+   "fieldname": "expense_account",
    "fieldtype": "Link",
-   "label": "COGS Account",
+   "label": "Expense Account",
    "options": "Account",
    "reqd": 1
   }
@@ -83,7 +83,7 @@
  "index_web_pages_for_search": 1,
  "is_tree": 1,
  "links": [],
- "modified": "2025-06-26 13:33:44.176698",
+ "modified": "2025-06-26 16:47:58.620656",
  "modified_by": "Administrator",
  "module": "accounting_app",
  "name": "Warehouse",

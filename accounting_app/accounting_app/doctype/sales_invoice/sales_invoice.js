@@ -20,7 +20,7 @@ frappe.ui.form.on('Sales Invoice', {
             };
         });
 
-        frm.set_query('cogs_account', 'items', () => {
+        frm.set_query('expense_account', 'items', () => {
             return {
                 filters: { 'account_type': 'Expense', 'is_group': 0 }
             };
@@ -53,17 +53,17 @@ frappe.ui.form.on('Sales Invoice', {
 
     warehouse: async function(frm) {
         if (!frm.doc.warehouse || !frm.doc.items) return;
-        const { message } = await frappe.db.get_value('Warehouse', frm.doc.warehouse, ['account', 'cogs_account']);
+        const { message } = await frappe.db.get_value('Warehouse', frm.doc.warehouse, ['account', 'expense_account']);
         const warehouse_account = message?.account;
-        const warehouse_cogs_account = message?.cogs_account;
+        const warehouse_expense_account = message?.expense_account;
         for (const row of frm.doc.items) {
             if (row.is_stock) {
                 frappe.model.set_value(row.doctype, row.name, 'warehouse', frm.doc.warehouse);
                 if (warehouse_account) {
                     frappe.model.set_value(row.doctype, row.name, 'stock_account', warehouse_account);
                 }
-                if (warehouse_cogs_account) {
-                    frappe.model.set_value(row.doctype, row.name, 'cogs_account', warehouse_cogs_account);
+                if (warehouse_expense_account) {
+                    frappe.model.set_value(row.doctype, row.name, 'expense_account', warehouse_expense_account);
                 }
             } else {
                 frappe.model.set_value(row.doctype, row.name, 'warehouse', '');
@@ -99,11 +99,11 @@ frappe.ui.form.on('Sales Invoice Item', {
 
             frappe.model.set_value(cdt, cdn, 'is_stock_item', is_stock_item ? 1 : 0);
             if (is_stock_item) {
-                const { message } = await frappe.db.get_value('Warehouse', frm.doc.warehouse, ['account', 'cogs_account']);
+                const { message } = await frappe.db.get_value('Warehouse', frm.doc.warehouse, ['account', 'expense_account']);
                 const warehouse_account = message?.account;
-                const warehouse_cogs_account = message?.cogs_account;
+                const warehouse_expense_account = message?.expense_account;
                 frappe.model.set_value(cdt, cdn, 'stock_account', warehouse_account);
-                frappe.model.set_value(cdt, cdn, 'cogs_account', warehouse_cogs_account); 
+                frappe.model.set_value(cdt, cdn, 'expense_account', warehouse_expense_account); 
                 frappe.model.set_value(cdt, cdn, 'warehouse', frm.doc.warehouse);
             }else {
                 frappe.model.set_value(cdt, cdn, 'warehouse', '');
@@ -112,7 +112,7 @@ frappe.ui.form.on('Sales Invoice Item', {
             if (grid_row) {
                 grid_row.toggle_display('warehouse', is_stock_item);
                 grid_row.toggle_display('stock_account', is_stock_item);
-                grid_row.toggle_display('cogs_account', is_stock_item);
+                grid_row.toggle_display('expense_account', is_stock_item);
             }
         });
     },

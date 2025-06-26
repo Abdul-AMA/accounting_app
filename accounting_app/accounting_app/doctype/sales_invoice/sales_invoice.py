@@ -42,20 +42,20 @@ class SalesInvoice(AccountingController):
             credit=self.total_amount
         )
 
-        cogs_totals = {}
+        expense_totals = {}
         stock_totals = {}
 
         for item in self.get("items"):
             if item.is_stock:
-                if item.cogs_account:
-                    cogs_totals.setdefault(item.cogs_account, 0)
-                    cogs_totals[item.cogs_account] += float(item.amount or 0)
+                if item.expense_account:
+                    expense_totals.setdefault(item.expense_account, 0)
+                    expense_totals[item.expense_account] += float(item.amount or 0)
 
                 if item.stock_account:
                     stock_totals.setdefault(item.stock_account, 0)
                     stock_totals[item.stock_account] += float(item.amount or 0)
 
-        for account, amount in cogs_totals.items():
+        for account, amount in expense_totals.items():
             self._create_gl_entry(
                 posting_date=self.posting_date,
                 account=account,
